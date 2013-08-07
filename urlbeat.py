@@ -1,3 +1,5 @@
+"""Urlbeat - simple URL shortener web app."""
+
 import os
 import string
 from urlparse import urlparse, urlunparse
@@ -14,6 +16,21 @@ db = SQLAlchemy(app)
 
 
 class Redirection(db.Model):
+
+    """Redirection as a resources.
+
+    id:             Primary key.
+    key:            Same as `id`, but encoded in base 62 with
+                    numerals consisting of `alphabet` characters.
+    alphabet:       String of allowed characters for short URLs.
+
+    url:            URL which is redirected to.
+    normalized_url: Same as `url` but converted to canonical
+                    format and ensured that URL scheme (e.g. http)
+                    is present.
+    short_url:      Short URL constructed with `key`.
+
+    """
 
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String)
