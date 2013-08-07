@@ -59,6 +59,6 @@ def index_key(key):
     abort(404)
 
 
-#@app.errorhandler(404)
-#def page_not_found(error):
-#    return render('page_not_found.html'), 404
+@app.errorhandler(404)
+def page_not_found(error):
+    return render('404.html'), 404

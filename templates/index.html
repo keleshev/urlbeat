@@ -16,6 +16,7 @@
   <div class="col-lg-8 col-lg-offset-2">
     <div class="jumbotron text-center">
       <h1>Urlbeat</h1>
+      {% block content %}
         <form action="/" method="post">
           <div class="input-group">
             <input class="form-control input-lg"
@@ -26,11 +27,12 @@
               <input class="btn btn-primary btn-lg"
                      type="submit" value="Shorten!" />
             </span>
-        </div>
-      </form>
-      <a href="{{ redirection.short_url }}">
-        {{ redirection.short_url }}
-      </a>
+          </div>
+        </form>
+        <a href="{{ redirection.short_url }}">
+          {{ redirection.short_url }}
+        </a>
+      {% endblock %}
     </div>
   </div>
 </body>
