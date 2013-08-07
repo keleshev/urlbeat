@@ -1,16 +1,36 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Urlbeat</title>
-    <link rel="stylesheet" href="/static/normalize.css">
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="utf-8">
+  <title>Urlbeat</title>
+  <link rel="stylesheet" href="/static/bootstrap.css">
+  <style>
+    .jumbotron {
+      background-color: #fff;
+      margin-bottom: 60px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Urlbeat</h1>
-    <form action="/" method=post>
-        <input type="text" value="{{ redirection.url }}" name="url" autofocus />
-        <p>{{ redirection.short_url }}</p>
-        <input type="submit" />
-    </form>
+  <div class="jumbotron"></div>
+  <div class="col-lg-8 col-lg-offset-2">
+    <div class="jumbotron text-center">
+      <h1>Urlbeat</h1>
+        <form action="/" method="post">
+          <div class="input-group">
+            <input class="form-control input-lg"
+                   type="text" name="url"
+                   placeholder="e.g. www.google.com" autofocus
+                   value="{{ redirection.url }}" />
+            <span class="input-group-btn">
+              <input class="btn btn-primary btn-lg"
+                     type="submit" value="Shorten!" />
+            </span>
+        </div>
+      </form>
+      <a href="{{ redirection.short_url }}">
+        {{ redirection.short_url }}
+      </a>
+    </div>
+  </div>
 </body>
