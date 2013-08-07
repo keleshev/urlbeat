@@ -8,11 +8,6 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from bda.basen import str2int, int2str
 
 
-alphabet = string.digits + string.letters
-encode = lambda id: int2str(id, alphabet)
-decode = lambda key: str2int(key, alphabet)
-
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
@@ -22,10 +17,15 @@ class Redirection(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String)
+    alphabet = string.digits + string.letters
 
     @property
     def key(self):
-        return encode(self.id)
+        return int2str(self.id, self.alphabet)
+
+    @classmethod
+    def for_key(self, key):
+        return self.query.get(str2int(key, self.alphabet))
 
     @property
     def normalized_url(self):
@@ -52,8 +52,8 @@ def index():
 
 @app.route('/<key>')
 def index_key(key):
-    if set(key) <= set(alphabet):
-        redirection = Redirection.query.get(decode(key))
+    if set(key) <= set(Redirection.alphabet):
+        redirection = Redirection.for_key(key)
         if redirection:
             return redirect(redirection.normalized_url)
     abort(404)
