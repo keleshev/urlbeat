@@ -1,5 +1,6 @@
 import os
 import string
+from urlparse import urlparse, urlunparse
 
 from flask import Flask, request, redirect, abort, render_template as render
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -27,29 +28,35 @@ class Redirection(db.Model):
         return encode(self.id)
 
     @property
+    def normalized_url(self):
+        url = urlparse(self.url)
+        if not url.scheme:
+            url = urlunparse(['http', url.netloc, url.path,
+                              url.params, url.query, url.fragment])
+            return url.replace(':///', '://')  # Seems to be a `urlparse` bug.
+        return self.url
+
+    @property
     def short_url(self):
-        return request.url_root + self.key
+        return self.key and request.url_root + self.key
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == 'POST':
-        url = request.form['url']
-        redirection = Redirection(url=url)
+    redirection = Redirection(url=request.form.get('url', ''))
+    if request.method == 'POST' and redirection.url:
         db.session.add(redirection)
         db.session.commit()
-        return render('index.html', redirection=redirection)
-    else:
-        return render('index.html')
+    return render('index.html', redirection=redirection)
 
 
 @app.route('/<key>')
 def index_key(key):
-    redirection = db.session.query(Redirection).get(decode(key))
-    if redirection:
-        return redirect(redirection.url)
-    else:
-        abort(404)
+    if set(key) <= set(alphabet):
+        redirection = Redirection.query.get(decode(key))
+        if redirection:
+            return redirect(redirection.normalized_url)
+    abort(404)
 
 
 #@app.errorhandler(404)
