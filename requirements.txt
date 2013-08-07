@@ -4,6 +4,7 @@ Jinja2==2.7
 MarkupSafe==0.18
 SQLAlchemy==0.8.2
 Werkzeug==0.9.3
+bda.basen==1.0
 distribute==0.6.31
 gunicorn==17.5
 itsdangerous==0.22
