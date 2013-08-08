@@ -30,3 +30,10 @@ Use [foreman](http://blog.daviddollar.org/2011/05/06/introducing-foreman.html)
 to start the app:
 
     foreman start
+
+To launch tests run `py.test`, which is installed with
+other requirements:
+
+    py.test test_urlbeat.py
+
+

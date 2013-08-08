@@ -11,7 +11,7 @@ from bda.basen import str2int, int2str
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
 
 
@@ -72,7 +72,7 @@ def index_key(key):
     if set(key) <= set(Redirection.alphabet):
         redirection = Redirection.for_key(key)
         if redirection:
-            return redirect(redirection.normalized_url)
+            return redirect(redirection.normalized_url), 301
     abort(404)
 
 

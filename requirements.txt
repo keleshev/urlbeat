@@ -9,4 +9,6 @@ distribute==0.6.31
 gunicorn==17.5
 itsdangerous==0.22
 psycopg2==2.5.1
+py==1.4.15
+git+https://github.com/hpk42/pytest.git@694aa9030a31d001c4aee82cd0c170357073b272
 wsgiref==0.1.2
